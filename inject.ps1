@@ -3,8 +3,8 @@
 # ==============================================================================
 
 # 1. CONFIGURAÇÕES (MUDE O LINK ABAIXO)
-$DllUrl = "https://raw.githubusercontent.com/enzin762/wasd/main/d3d11.dll"
-$ProxyName = "d3d11.dll"
+$DllUrl = "https://raw.githubusercontent.com/enzin762/wasd/main/version.dll"
+$ProxyName = "version.dll"
 
 # 2. LOCALIZAR PASTA DO SOUNDPAD DEMO NA STEAM
 $SoundpadPath = "C:\Program Files (x86 )\Steam\steamapps\common\Soundpad\Soundpad.exe"
@@ -53,3 +53,4 @@ Start-Process $SoundpadPath
 # Remove o histórico de comandos do ISE para não verem o link do GitHub
 [Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()
 Write-Host "[OK] Tudo pronto! O cheat carregará com o jogo." -ForegroundColor Cyan
+
